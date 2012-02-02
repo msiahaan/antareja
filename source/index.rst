@@ -17,7 +17,8 @@ Contents:
    bilangan_variabel
    while_if
    list_tuple
-   
+   objek
+   exceptions
    
 
 Indices and tables
