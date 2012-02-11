@@ -183,4 +183,98 @@ Kita membuat objek 'budi' sebagai instans dari PemainBola. Nah sebagai seorang p
         atribut-atribut KelasAnak
         ...
 
+__init__
+---------
+
+Class dalam python dapat memiliki atribut berupa 'method' yang merupakan fungsi yang 'melakukan sesuatu'. Method mendapat masukan berupa argumen-argumen dan biasanya 'self' merupakan salah satu argumen. Salah satu method yang 'spesial' dalam python adalah __init__.
+
+__init__ adalah method yang secara otomatis dipanggil saat program kita membuat instans dari kelas tersebut. Dalam bahasa pemrograman lain, __init__ dapat disetarakan walau tidak sama persis dengan 'konstruktor'. __init__ seringkali digunakan untuk memberikan 'initial value' untuk variabel atribut dari kelas tersebut. 
+
+Kembali ke contoh Manusia kita. Kita ingin minimal seorang manusia memiliki nama, maka::
+
+    class Manusia(object):
+
+        def __init__(self, namanya):
+            self.nama = namanya
+
+        def set_umur(self, umurnya):
+            self.umur = umurnya
+            
+        def set_tinggi(self, tingginya):
+            self.tinggi = tingginya
+            
+        def set_berat(self, beratnya):
+            self.berat = beratnya
+
+
+    class PemainBola(Manusia):
+
+       def tendang_bola(self):
+           print '%s menendang bola" % self.nama
+      
+
+kemudian kita buat kelas PemainBola sebagai turunan dari kelas Manusia. Maka penggunaannya dalam program kita::
+
+    >>> budi = PemainBola("Budi")
+    >>> budi.tendang_bola()
+    Budi menendang bola
+    >>>
+
+
+Polimorfisme
+------------
+
+Polimorfisme: banyak bentuk. Dalam pemrograman OOP polimorfisme dilakukan apabila kelas anak menggunakan nama method yang sama dengan na a method kelas induk namun dengan implementasi berbeda. Dalam pemrograman OOP umumnya dikenal 2 bentuk polimorfisme:
+Overloading: kelas anak menggunakan nama method yang sama namun tipe dan jumlah argumen berbeda.
+Overriding: kelas anak mendifinisikan ulang method dari kelas induk
+
+Dalam python, berbeda dengan bahasa pemrograman lain, hanya mengenal overriding. Overloading dilakukan dengan pendekatan menggunakan 'keyword' sebagai argumen.
+
+Contoh::
+
+    class Manusia(object):
+        
+        def __init__(self, namanya):
+            self.nama = namanya
+            
+        def set_umur(self, umurnya):
+            self.umur = umurnya
+
+
+    class PemainBola(Manusia):
+        
+        def __init__(self, posisi):
+            self.posisi = posisi
+
+maka jika kita ingin membuat instans budi::
+
+    >>> budi = PemainBola("Budi", "Striker")
+    Traceback (most recent call last):
+    File "", line 1, in 
+    budi = PemainBola("Budi", "Striker")
+    TypeError: __init__() takes exactly 2 arguments (3 given)
+
+muncul pesan kesalahan. Yang betul::
+    
+    >>> budi = PemainBola("Striker")
+
+Nah, kita mendefinisikan ulang method __init__ dalam kelas PemainBola, dan saat kita membuat instans 'budi' dengan memasukkan nama dan posisi, ternyata error. Mengapa? Karena method __init__ dalam kelas PemainBola hanya menerima 2 argumen: self, dan posisi. Method __init__ kelas anak (PemainBola) meng-override method __init__ kelas induk. Lalu bagaimana dong?
+
+Solusinya: dalam definisi method __init__ kelas anak (PemainBola), kita panggil dulu method __init__ dari kelas induk (Manusia)::
+
+    class PemainBola(Manusia):
+    
+        def __init__(self, nama, posisi):
+            Manusia.__init__(self, nama)
+            self.posisi = posisi
+
+dan contoh penggunaannya
+::
+
+    >>> budi = PemainBola("Budi", "Striker")
+    >>> budi.nama
+    'Budi'
+    >>> budi.posisi
+    'Striker'
+
 
